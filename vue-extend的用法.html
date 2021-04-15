@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue-extend的用法</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <view-text></view-text>
+    </div>
+</body>
+<script>
+    //使用extend方式创建vue组件
+    const VueExtend = Vue.extend({
+        template: '<div>{{content}}</div>',
+        data() {
+            return {
+                content: '人生自古谁无死,留取丹心照汗青'
+            }
+        },
+        name: 'ViewTest'
+    });
+    Vue.component('ViewText', VueExtend);
+    const vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+    })
+</script>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue-use的用法</title>
+    <script src="js/vue.js"></script>
+    <style>
+        #loading-wapper {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            background-color: rgba(0, 0, 0, .8);
+            color: white;
+            font-size: 22px;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="showLoading">加载数据</button>
+    </div>
+</body>
+<script>
+    //将插件封装到一个对象当中,用Vue.use使用插件
+    const PluginLoading = {
+            install(vm) {
+                //创建组件,并做一些配置
+                const PluginComponent = Vue.extend({
+                    template: '<div id="loading-wapper">{{msg}}</div>',
+                    props: {
+                        msg: {
+                            type: String,
+                            default: '加载...'
+                        }
+                    },
+                    name: 'PluginLoading'
+                });
+
+                function loading(msg) {
+                    const dvobj = document.createElement('div');
+                    dvobj.setAttribute('id', 'loading-wapper');
+                    document.body.appendChild(dvobj);
+                    //实例化组件并挂载到loading-wapper上
+                    new PluginComponent({
+                            props: {
+                                msg: {
+                                    type: String,
+                                    default: msg
+                                }
+                            }
+                        }).$mount('#loading-wapper')
+                        //删除节点
+                    return () => {
+                        document.body.removeChild(document.querySelector('#loading-wapper'));
+                    }
+                }
+                //将loading方法添加到Vue原型当中
+                vm.prototype.$loading = loading;
+            }
+        }
+        //使用组件
+    Vue.use(PluginLoading)
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            content: ''
+        },
+        methods: {
+            showLoading() {
+                const hide = this.$loading('数据加载中,请稍后...');
+                setTimeout(function() {
+                    hide();
+                    this.content = '数据加载完毕'
+                }, 1500)
+            }
+        }
+    })
+</script>
+
+</html>

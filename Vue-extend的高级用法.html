@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue-extend的高级用法</title>
+    <script src="js/vue.js"></script>
+    <style>
+        #swiper-loading {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            background-color: rgba(0, 0, 0, .7);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="isLoading">{{text}}</button>
+        <div :datas="datas">{{datas}}</div>
+    </div>
+</body>
+<script>
+    //定义一个方法创建组件,并在实例化组件以后移除,封装一个特定的功能,实现与自定义指令类似的数据加载功能
+    function loading(msg) {
+        const LoadingComponent = Vue.extend({
+                template: '<div id="swiper-loading">{{msg}}</div>',
+                props: {
+                    msg: {
+                        type: String,
+                        default: msg
+                    },
+                    datas: {
+                        type: String,
+                        default: ''
+                    }
+                },
+                name: 'LoadComponent'
+            })
+            //创建div设置属性并加入到body当中
+        const dvobj = document.createElement('div');
+        dvobj.setAttribute('id', 'swiper-loading');
+        document.body.appendChild(dvobj);
+        //实例化组件并将组件挂载到#swiper-loading上
+        new LoadingComponent().$mount('#swiper-loading');
+        //从body中移除#swiper-loading
+        return () => {
+            document.body.removeChild(document.getElementById('swiper-loading'));
+        }
+    }
+    //将loading方法添加到Vue.prototype(原型)中
+    Vue.prototype.$LoadingData = loading;
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            text: '加载数据',
+            datas: ''
+        },
+        methods: {
+            isLoading() {
+                //通过this调用loadingData方法并用一个常量接收
+                const hide = this.$LoadingData('数据加载中,请稍后...');
+                setTimeout(() => {
+                    hide();
+                    this.datas = '数据加载完毕'
+                }, 1500)
+            }
+        }
+    })
+</script>
+
+</html>

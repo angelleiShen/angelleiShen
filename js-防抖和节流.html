@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>防抖和节流</title>
+    <style>
+        #box {
+            width: 100px;
+            height: 200px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" class="test" id="text" />
+    <div id="box" draggable="true">我就是一个兢兢业业的码农</div>
+</body>
+<script>
+    // document.getElementById('text').addEventListener('keyup', function() {
+    //     let that = this;
+    //     setTimeout(function() {
+    //         console.log(that.value);
+    //     }, 1500);
+    // })
+    // document.getElementById('text').addEventListener('keyup', function() {
+    //     setTimeout(() => {
+    //         console.log(this.value);
+    //     }, 1500)
+    // });
+    // function exmple(timer, onTime = 500) {
+    //     if (timer) {
+    //         clearTimeout(timer);
+    //     }
+    //     document.getElementById('text').addEventListener('keyup', function() {
+    //         timer = setTimeout(() => {
+    //             console.log(this.value);
+    //         }, onTime)
+    //     })
+    //     clearTimeout(timer);
+    // }
+    // exmple();
+    // const input1 = document.getElementById('text');
+    // function debounce(fn, delay) {
+    //     let timer = null;
+    //     return function() {
+    //         if (timer) {
+    //             clearTimeout(timer);
+    //         }
+    //         timer = setTimeout(function() {
+    //             //fn.apply(this, arguments);
+    //             fn.call(this);
+
+    //             //清理定时器
+    //             //clearTimeout(timer);
+    //             timer = null;
+    //         }, delay)
+    //     }
+    // }
+    // input1.addEventListener('keyup', debounce(function() {
+    //     console.log(input1.value);
+    //     //清理定时器
+    //     //clearTimeout(timer);
+    // }, 200))
+    // const box = document.getElementById('box');
+    // box.addEventListener('drag', function(e) {
+    //     console.log(e.offsetX + "==" + e.offsetY);
+    // // });
+    // const box = document.getElementById('box');
+    // let timer = null;
+    // box.addEventListener('drag', function(e) {
+    //     // 如果timer存在return掉,后面的代码都不会执行,如果timer存在那么就执行定时器,减少性能的消耗
+    //     if (timer) {
+    //         return;
+    //     }
+    //     timer = setTimeout(function() {
+    //         console.log(e.offsetX + "===" + e.offsetY);
+    //         timer = null;
+    //     }, 200);
+    // })
+    //     //清理定时器
+    //     //clearTimeout(timer);
+    // }, 200))
+    // const box = document.getElementById('box');
+    // box.addEventListener('drag', function(e) {
+    //     console.log(e.offsetX + "==" + e.offsetY);
+    // // });
+    // const box = document.getElementById('box');
+    // let timer = null;
+    // box.addEventListener('drag', function(e) {
+    //     // 如果timer存在return掉,后面的代码都不会执行,如果timer存在那么就执行定时器,减少性能的消耗
+    //     if (timer) {
+    //         return;
+    //     }
+    //     timer = setTimeout(function() {
+    //         console.log(e.offsetX + "===" + e.offsetY);
+    //         timer = null;
+    //     }, 200);
+    // })
+    // const box = document.getElementById('box');
+    // const grps = function(fn, delay) {
+    //     let timer = null;
+    //     return function() {
+    //         if (timer) {
+    //             return;
+    //         }
+    //         timer = setTimeout(() => {
+    //             fn.apply(this, arguments);
+    //             timer = null;
+    //         }, delay);
+    //     }
+    // }
+    // box.addEventListener('drag', grps(function(e) {
+    //     console.log(e.offsetX + "===" + e.offsetY);
+    // }), 300)
+    class GrilFriend {
+        constructor(names, age, sex, height, weight) {
+            this.names = names;
+            this.age = age;
+            this.height = height;
+            this.weight = weight;
+        }
+        eat() {
+            console.log(this.names + '每天都要吃10个大西瓜');
+        }
+    }
+    const girl = new GrilFriend('李玉洁', '22', '女', '176cm', '55kg');
+    girl.eat();
+    console.log(girl.height);
+    class Man {
+        constructor(hibbies, play) {
+            this.hibbies = hibbies;
+            this.play = play;
+        }
+    }
+    Man.prototype.sayHi = function(x, y) {
+        return x * y;
+    };
+    const man = new Man(['抽烟', '喝酒', '烫头'], '打游戏');
+    const result = man.sayHi(20, 30);
+    console.log(result);
+    class Person extends GrilFriend {
+        constructor(tiktok, names, age, sex, height) {
+            super(names, age, sex, height);
+            this.tiktok = tiktok;
+        }
+        happly() {
+            console.log('super这里可以调用父类对象中的方法');
+            super.eat();
+            super.height = '188cm'
+        }
+    }
+    const per = new Person('刷抖音', '张强', '18');
+    per.eat();
+    per.happly();
+    console.log(per.height);
+</script>
+
+</html>
