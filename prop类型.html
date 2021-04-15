@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prop类型</title>
+</head>
+
+<body>
+    <div id="app">
+        <keep-live :money="money" :bilibi="bilibi"></keep-live>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    Vue.component('keepLive', {
+        // props: 单项数据流也可以变成双向数据流
+        props: {
+            money: String,
+            bilibi: [String]
+        },
+
+        data() {
+            return {
+                content: '我是子组件'
+            }
+        },
+        methods: {
+            changeMoney(e) {
+                this.money = '我不是一个菜鸡,每个人都有自己坚持的目标,成功也许会迟到,但是永远也不会缺席';
+                console.log(this.money);
+            },
+            pushed() {
+                this.bilibi.push('贵州', '遵义', '红花岗区', '汇川区', '新蒲新区', '播州区');
+            }
+        },
+        template: `<div>
+          {{'this is a soon:' + content}}
+          <div v-on:click="changeMoney">
+            {{money}}
+          </div>
+          {{bilibi}}
+          <input type="button" name="" value="change" @click="pushed">
+    </div>`
+    })
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            title: '我是父组件',
+            money: '在孩纸年幼时,老爸给孩纸100块钱',
+            bilibi: ['up主', '楼主', '版主', '审核组', '调查组', '纪检组']
+        },
+        beforeMount() {
+            console.log(this.bilibi);
+        }
+    })
+</script>
+
+</html>

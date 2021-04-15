@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prop基础</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            {{life}}
+        </div>
+        <passerby post-hello="你好世界,只要努力,我坚信都可以有所收获" :lighthi="lighthi" :history="history"></passerby>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    Vue.component('passerby', {
+        props: ['postHello', 'lighthi', 'history'],
+        data() {
+            return {
+                nbs: `人生只有拼不拼,没有值不值得,如果你感到恐惧,那么就请你努力`,
+            }
+        },
+        template: `<div v-on:click="myitem">
+            {{nbs}}
+            <div>
+                {{postHello}}
+            </div>
+            <div>
+                {{lighthi}}
+            </div>
+          
+            <div>
+                {{history}}
+            </div>
+            <input type="button" name="" value="点击改变数组的值" v-on:click="changeArray">
+        </div>`,
+        methods: {
+            myitem(e) {
+                this.postHello = '改变是痛苦的,但是不改变你就会一直痛苦下去,长痛不如短痛，'
+            },
+            changeArray(e) {
+                this.history.push(1, 2, '姜维', '魏延', '刘禅', '诸葛亮', '徐庶');
+            },
+            computed: {
+                history: function() {
+                    if (history.length > 6) {
+                        let newArr = this.history.forEach((item, index) => {
+                            console.log(index);
+                        })
+                        return newArr;
+                    }
+                }
+            }
+        }
+    })
+    const vm = new Vue({
+            el: "#app",
+            data: {
+                life: '生命只有一次,让生命变得非常有意义',
+                postHello: '你好世界',
+                lighthi: '大家都是从菜鸡变成小白,然后变得不菜',
+                history: ['张飞', '马超', '关羽', '刘备', '赵云', '黄忠']
+            }
+        })
+        // html attribute 大小写不敏感的,所有浏览器会把所有大写字符解释为小写字符,
+        //这意味着(camel驼峰命名法)需要使用等价的(kebab-case短横线命名法),而在字符串模版中这个限制是不存在的
+</script>
+
+</html>

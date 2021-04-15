@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props传递对象的所有property</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            {{title}}
+        </div>
+        <!--即便只是传递静态数组,对象,boolean值也需要使用:v-bind绑定数据表示这是一个
+          javascript表达式而不是一个字符串-->
+        <!--所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行 vue发出警告-->
+        <world-bllo :array="[123,456,687]" :booleans="true" :objects="{names:'遥远的地方',age: '100年'}" :post="post"></world-bllo>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    Vue.component('worldBllo', {
+        props: {
+            'array': String,
+            'booleans': Boolean,
+            'objects': Object,
+            'post': {
+                id: '0001',
+                content: {
+                    author: '莫言',
+                    win: '诺贝尔文学奖得主'
+                }
+            }
+        },
+        data() {
+            return {
+                content: '我是子组件',
+            }
+        },
+        template: `
+         <div>
+          <div>
+            {{content}}
+          </div>
+          <div>
+            {{array}}
+            {{booleans}}
+            {{objects}}
+          </div>
+          <div>
+            {{post}}
+          </div>
+         </div>
+        `
+    })
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            title: '我是父组件',
+            post: {
+                port: `192.168.1.1`,
+                host: `http://localhost:2021/shen`,
+                open: 'get',
+                url: '/hash'
+            }
+        }
+    })
+</script>
+
+</html>
