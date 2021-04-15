@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue-组件component</title>
+</head>
+
+<body>
+    <div id="app">
+        <a href="" v-text="text">
+            <div>{{text}}</div>
+        </a>
+        <register-pass></register-pass>
+        <login></login>
+        <all-list></all-list>
+        <register></register>
+    </div>
+</body>
+<script src="./js/vue.js"></script>
+<script>
+    // Property or method "prompts" is not defined on the instance but referenced during render. Make sure that this property is reactive,
+    // either in the data option, or for class-based components, by initializing the property. See
+    // 使用组件上未定义的方法会报错,渲染之前没有定义就会报错
+    // 在根实例上使用全局定义的组件,组件名称只接受小写字符,采用驼峰式(camel)|首字母大写方法命名组件名称在根实例上用-连接
+    // 局部组件只能用在其注册的元素挂载下,可以在template模版中使用components挂载的局部组件,实现组件复用
+    var login = {
+        data() {
+            return {
+                titleLogin: '这是登录组件'
+            }
+        },
+        template: `
+            <div>{{titleLogin}}</div>
+        `
+    }
+    var register = {
+        data() {
+            return {
+                registerContent: `这是注册组件`
+            }
+        },
+        template: `
+            <div>
+                {{registerContent}}
+            </div>
+        `
+    }
+    Vue.component('RegisterPass', {
+        data() {
+            return {
+                text: '我是全局组件'
+            }
+        },
+        template: `<div v-on:click="prompts">{{text}}</div>`,
+        methods: {
+            prompts(e) {
+                console.log(e.target.innerText);
+            }
+        }
+    })
+
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            text: '<div>有句话叫做不作死就不会死,继续浪到无可救药的那天,你就成功了</div>'
+        },
+        components: {
+            login,
+            register
+        }
+    })
+    Vue.component('allList', {
+        data() {
+            return {
+                list: [{
+                    names: '百度一下',
+                    url: 'https://www.baidu.com'
+                }, {
+                    names: '爱奇艺',
+                    url: 'https://www.aiqiyi.com'
+                }, {
+                    names: '土豆视频',
+                    url: 'https://www.tudou.com'
+                }, {
+                    names: 'souhu',
+                    url: 'https://www.souhu.com'
+                }, ]
+            }
+        },
+        // Multiple root nodes returned from render function. Render function should return a single root node
+        // 渲染函数返回多个根节点,应该只能也只可以返回一个根节点
+        template: `<div>
+            <div v-for="(item,index) of list">
+            <a href="#" v-on:click.stop.prevent="targets">
+                <span>{{item.names}}</span>
+                <span>{{item.url}}</span>
+                </a>
+            </div>
+        </div>
+        `,
+        methods: {
+            targets(e) {
+                alert(e.target.innerText);
+            }
+        }
+    })
+</script>
+
+</html>
